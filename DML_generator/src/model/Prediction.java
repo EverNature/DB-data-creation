@@ -2,33 +2,33 @@ package model;
 
 public class Prediction {
 	
-	int prediction_id, registro_id, animal_id, animal_corregido;
+	int registro_id, animal_id, experto_id;
 	String message, predictedImagePath;
 	Float confidence;
 	boolean isPredicted;
 
-	public Prediction(int prediction_id, int registro_id, int animal_id, int animal_corregido, String message, String predictedImagePath,
-			Float confidence, boolean isPredicted) {
-		this.prediction_id = prediction_id;
+	public Prediction(int registro_id, int animal_id, String message, String predictedImagePath,
+			Float confidence, int experto_id) {
 		this.registro_id = registro_id;
 		this.animal_id = animal_id;
-		this.animal_corregido = animal_corregido;
 		this.message = message;
 		this.predictedImagePath = predictedImagePath;
 		this.confidence = confidence;
-		this.isPredicted = isPredicted;
+		this.experto_id = experto_id;
+		this.isPredicted = true;
+	}
+
+	public int getExperto_id() {
+		return experto_id;
 	}
 
 	@Override
 	public String toString() {
-		return "Prediction [prediction_id=" + prediction_id + ", registro_id=" + registro_id + ", animal_id=" + animal_id +
-				", animal_corregido=" + animal_corregido + ", message=" + message + ", predictedImagePath=" + predictedImagePath + 
-				", confidence=" + confidence + ", isPredicted=" + isPredicted +"]";
+		return "Prediction [registro_id=" + registro_id + ", animal_id=" + animal_id +
+				", message=" + message + ", predictedImagePath=" + predictedImagePath + 
+				", confidence=" + confidence +"]";
 	}
 
-	public int getPrediction_id() {
-		return prediction_id;
-	}
 
 	public int getRegistro_id() {
 		return registro_id;
@@ -36,10 +36,6 @@ public class Prediction {
 
 	public int getAnimal_id() {
 		return animal_id;
-	}
-
-	public int getAnimal_corregido() {
-		return animal_corregido;
 	}
 
 	public String getMessage() {

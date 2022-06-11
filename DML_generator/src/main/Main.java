@@ -18,7 +18,7 @@ import model.Zona;
 
 public class Main {
 	MysqlCon connection;
-	List<String> usernameList, nameList, surnameList, passList, speciesList, zoneList;
+	List<String> usernameList, nameList, surnameList, passList, speciesList, zoneList, recordsList, predictionsList;
 	List<Integer> usedHourList;
 	
 	List<Animal> animalList;
@@ -37,7 +37,9 @@ public class Main {
 		specializationList = new ArrayList<>();
 		expertList = new ArrayList<>();
 		animalList = new ArrayList<>();		
+		predictionList = new ArrayList<>();
 		zonesList = new ArrayList<>();
+		recordList = new ArrayList<>();
 		cameraList = new ArrayList<>();
 		usernameList = new ArrayList<>();
 		nameList = new ArrayList<>();
@@ -142,6 +144,7 @@ public class Main {
 	}
 
 	private void createExperts() {
+
 		int day = (int) (Math.random() * (29 - 1)) + 1;
 		int month = (int) (Math.random() * (12 - 1)) + 1;
 		int year = (int) (Math.random() * (2021 - 2017)) + 2017;
@@ -160,7 +163,6 @@ public class Main {
 
 			expertList.add(expert);
 		}
-
 	}
 
 	private void printExperts() {
@@ -236,6 +238,58 @@ public class Main {
 		printCameras();
 	}
 	
+	private void generatePredictions() {
+		createPredictions();
+		printPredictions();
+	}
+	
+	private void printPredictions() {
+		for(Prediction p: predictionList) {
+			System.out.println(p.toString());
+			connection.insertPredictionValidada(p);
+		}
+	}
+
+	private void createPredictions() {
+		for (int i = 1; i <= 800; i++) {
+			int animal = (int) (Math.random() * animalList.size()) + 1;
+			int experto = (int) (Math.random() * expertList.size()) -5;
+			if (experto <= 0) experto = 1;
+			float confianza = (float) (Math.random() * 100);
+
+			
+			
+			Prediction prediction = new Prediction(i, animal, "example message", "image path", confianza, experto);
+			predictionList.add(prediction);
+		}
+	}
+
+	private void generateRegisters() {
+		createRecords();
+		printRecords();
+	}
+	
+
+	private void printRecords() {
+		for(model.Record r: recordList) {
+			System.out.println(r.toString());
+			
+			connection.insertRecord(r);
+		}
+	}
+
+	private void createRecords() {
+		for (int i = 1; i <= 800; i++) {
+			int day = (int) (Math.random() * (29 - 1)) + 1;
+			int month = (int) (Math.random() * (12 - 1)) + 1;
+			int year = (int) (Math.random() * (2021 - 2017)) + 2017;
+
+			LocalDate date = LocalDate.of(year, month, day);
+			int numCam = (int) (Math.random() * cameraList.size()) + 1;
+			model.Record record = new model.Record("imagePath", date, date, numCam);
+			recordList.add(record);
+		}
+	}
 
 	private void printCameras() {
 
@@ -247,7 +301,7 @@ public class Main {
 	}
 
 	private void createCameras() {
-		for(int i = 0; i< 500; i++) {
+		for(int i = 0; i< 100; i++) {
 			int numZona = (int) (Math.random() * zoneList.size()) + 1;
 			String nombreZona = null;
 			for(Zona z : zonesList) {
@@ -269,8 +323,14 @@ public class Main {
 		main.generateAnimals(); //animals
 		main.generateZones(); // zonas
 		main.generateCameras(); //cameras	
+		main.generateRegisters(); //registros
+		main.generatePredictions(); //predictions
 		main.closeConnection();
 	}
+
+	
+
+	
 
 
 
